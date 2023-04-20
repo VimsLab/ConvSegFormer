@@ -5,6 +5,7 @@ ConvSegFormer - A convolution aided SegFormer architecture for detection of disc
 *ConvSegFormer architecture*
 
 ![](/Images/MESAPP.svg)
+
 *Modified Efficient Self Attention (MESA)*
 
 ### Abstract
