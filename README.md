@@ -1,7 +1,7 @@
 # ConvSegFormer
 ConvSegFormer - A convolution aided SegFormer architecture for detection of discontinuities in wrapped interferometric phase imagery of Sea Ice
 
-![ConvSegFormer architecture](/Images/ArchitectureMainY.pdf)
+![ConvSegFormer architecture](/Images/ConvSegFormerB0.svg)
 
 ### Abstract
 
