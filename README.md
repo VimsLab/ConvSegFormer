@@ -16,3 +16,16 @@ Transformers are more expressive than convolutions due to their global receptive
 ### Results
 
 ![](/Images/ResultsTable.png)
+
+If you find our work useful, please use the following to cite it - 
+
+```
+@inproceedings{dulam2023convsegformer,
+  title={ConvSegFormer-A Convolution Aided SegFormer Architecture for Detection of Discontinuities in Wrapped Interferometric Phase Imagery of Sea Ice},
+  author={Dulam, Rohit Venkata Sai and Fedders, Emily R and Mahoney, Andrew R and Kambhamettu, Chandra},
+  booktitle={Image Analysis: 23rd Scandinavian Conference, SCIA 2023, Sirkka, Finland, April 18--21, 2023, Proceedings, Part II},
+  pages={203--213},
+  year={2023},
+  organization={Springer}
+}
+```
