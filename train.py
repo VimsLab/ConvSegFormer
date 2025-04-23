@@ -3,15 +3,12 @@ from torch.nn import functional as F
 from ConvSegFormer import *
 
 def _weighted_cross_entropy_loss(preds, edges):
-	losses = F.binary_cross_entropy_with_logits(preds.float(),
-												edges.float(),
-												weight=None,
-												reduction='none')
+	losses = F.binary_cross_entropy_with_logits(preds.float(), edges.float(),weight=None,reduction='none')
 
 	loss = torch.sum(losses) / b
 	return loss
 
-def training(epochs, eno, model, dataloader, cuda, optimizer, scheduler = None, f_name = 'model.pt'):
+def training(epochs, model, dataloader, cuda, optimizer, scheduler = None, f_name = 'model.pt'):
 	model.train()
 	loss_before = 0.0
 	for epoch in range(epochs):
@@ -51,10 +48,10 @@ def training(epochs, eno, model, dataloader, cuda, optimizer, scheduler = None, 
 	return model
 
 
-def main(train = False, lr = 0.001, epochs = 30, t = 25, f_name = 'checkpoints/model.pt', device_list = None, device = 0, batch = 0, sched = 1):
+def main(train = False, lr = 0.001, epochs = 30, f_name = 'checkpoints/model.pt', device_list = None, device = 0, batch = 0):
 	cuda = torch.device("cuda:" + str(device) if torch.cuda.is_available() else "cpu")
 
-	model = ConvSegFormer(deep_supervision = False) ## Larger model. For smaller model, change the kernel_size parameter in ConvSegFormer.py at lines 69 and 82 to '1'.
+	model = ConvSegFormer(deep_supervision = True) ## Larger model. For smaller model, change the kernel_size parameter in ConvSegFormer.py at lines 69 and 82 to '1'.
 
 	if device_list is not None:
 		model = nn.DataParallel(model, device_ids = device_list)
@@ -67,25 +64,20 @@ def main(train = False, lr = 0.001, epochs = 30, t = 25, f_name = 'checkpoints/m
 	print(len(train_set), flush = True)
 	train_dataloader = DataLoader(train_set, batch_size = batch, shuffle = True, num_workers = 8)
 	optimizer = torch.optim.Adam(model.parameters(), lr = lr)
-	if sched:
-		scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
-	else:
-		scheduler = None
-
 	epoch = 0
 	
-  print('No Pre-Training', flush = True)
-  start = time.time()
+  	print('No Pre-Training', flush = True)
+  	start = time.time()
 
 	if train:
-			model = training(abs(epochs - epoch), abs(epoch - t), model, train_dataloader, cuda, optimizer, scheduler, f_name = f_name)
+			model = training(abs(epochs - epoch), model, train_dataloader, cuda, optimizer, scheduler, f_name = f_name)
 			end = time.time()
 			print('Time taken for %d with a batch_size of %d is %.2f hours.' %(epochs, batch, (end - start) / (3600)), flush = True)
 
-lr = float(sys.argv[1])
-n = int(sys.argv[5])
-b = int(sys.argv[6])
-if n > 1:
-	main(train = True, lr = lr, epochs = int(sys.argv[2]), t = int(sys.argv[3]), f_name = 'checkpoints/' + str(sys.argv[4]), device_list = [i for i in range(n)], batch = n * b, sched = int(sys.argv[-1]))
-else:
-	main(train = True, lr = lr, epochs = int(sys.argv[2]), t = int(sys.argv[3]), f_name = 'checkpoints/' + str(sys.argv[4]), device = n, batch = b, sched = int(sys.argv[-1]))
+	lr = float(sys.argv[1])
+	n = int(sys.argv[4])
+	b = int(sys.argv[5])
+	if n > 1:
+		main(train = True, lr = lr, epochs = int(sys.argv[2]), f_name = 'checkpoints/' + str(sys.argv[3]), device_list = [i for i in range(n)], batch = n * b)
+	else:
+		main(train = True, lr = lr, epochs = int(sys.argv[2]), f_name = 'checkpoints/' + str(sys.argv[3]), device = n, batch = b)
