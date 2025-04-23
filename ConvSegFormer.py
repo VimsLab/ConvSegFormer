@@ -956,11 +956,11 @@ class ConvSegFormer(nn.Module):
 		transf_features, conv_features = self.encoder(x)
 		return self.decoder(transf_features, conv_features)
 
-model = ConvSegFormer(deep_supervision = False)
-device = torch.device("cuda:0")
-model.to(device)
-from torchinfo import summary
-summary(model, input_size=(1, 3, 512, 512))
+# model = ConvSegFormer(deep_supervision = False)
+# device = torch.device("cuda:0")
+# model.to(device)
+# from torchinfo import summary
+# summary(model, input_size=(1, 3, 512, 512))
 
 ## Changing the kernel_size parameter in classes in line 69 and 82 to '1' will give
 ## parameters and GMACs for the smaller version.
