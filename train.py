@@ -31,8 +31,7 @@ def training(epochs, model, dataloader, cuda, optimizer, scheduler = None, f_nam
 			optimizer.step()
 			loss_end += loss.mean().item()
 			count += 1
-		if scheduler is not None:
-			scheduler.step()
+		
 		loss_before = loss_end/count
 		print('[%d/%d]Loss: %.2f' % (epoch, epochs, loss_end/count), flush = True)
 		if (epoch % 10 != 0):
